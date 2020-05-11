@@ -25,12 +25,12 @@ public class DistributeDemoApplicationTests {
     @Test
     public void concurrentOrder() throws InterruptedException {
         //Thread.sleep(60000);
-        CountDownLatch cdl = new CountDownLatch(50);
+        CountDownLatch cdl = new CountDownLatch(5);
         // 所有线程等待  同时执行
-        CyclicBarrier cyclicBarrier = new CyclicBarrier(50);
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(5);
 
-        ExecutorService es = Executors.newFixedThreadPool(50);
-        for (int i =0;i<50;i++){
+        ExecutorService es = Executors.newFixedThreadPool(5);
+        for (int i =0;i<5;i++){
             es.execute(()->{
                 try {
                     cyclicBarrier.await();

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -49,10 +48,14 @@ public class OrderService {
      *      condition2: 库存变成负数
      *          sql中扣减库存->  产生了多条订单     但是库存由1 -> 变为负数
      *原因: 并发检验库存,造成库存充足假象
+     *
+     * 解决:
+     * 1. synchronized  -- 性能低
+     * 2. reentrantlock --不能跨jvm
      * @return
      * @throws Exception
      */
-    @Transactional(rollbackFor = Exception.class)
+    //@Transactional(rollbackFor = Exception.class)
     public Integer createOrder() throws Exception{
         Product product = null;
 
