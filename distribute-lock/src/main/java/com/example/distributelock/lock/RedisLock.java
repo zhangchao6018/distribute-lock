@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Slf4j
+//implements AutoCloseable  jdk 1.7新特性 重写 close()  方法 可以实现后台自动释放资源
 public class RedisLock implements AutoCloseable {
 
     private RedisTemplate redisTemplate;

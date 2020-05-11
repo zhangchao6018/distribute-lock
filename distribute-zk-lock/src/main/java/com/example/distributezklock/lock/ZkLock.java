@@ -24,6 +24,12 @@ public class ZkLock implements AutoCloseable, Watcher {
             //创建业务 根节点
             Stat stat = zooKeeper.exists("/" + businessCode, false);
             if (stat==null){
+                /**
+                 * 参数1  节点唯一路径
+                 * 参数2  数据
+                 * 参数3  不需要账号密码就能连接zookeeper
+                 * 参数4  瞬时/瞬时有序/持久/持久有序  持久类型: zookeeper挂了重启还能生效
+                 */
                 zooKeeper.create("/" + businessCode,businessCode.getBytes(),
                         ZooDefs.Ids.OPEN_ACL_UNSAFE,
                         CreateMode.PERSISTENT);
@@ -54,7 +60,9 @@ public class ZkLock implements AutoCloseable, Watcher {
                     lastNode = node;
                 }
             }
+            //必须加synchronized锁
             synchronized (this){
+                //等待节点发生变化    zooKeeper.exists("/"+businessCode+"/"+lastNode,true);
                 wait();
             }
 
@@ -77,6 +85,10 @@ public class ZkLock implements AutoCloseable, Watcher {
         log.info("我已经释放了锁！");
     }
 
+    /**
+     * 唤起等待的线程
+     * @param event
+     */
     @Override
     public void process(WatchedEvent event) {
         if (event.getType() == Event.EventType.NodeDeleted){
