@@ -21,6 +21,9 @@ public class RedissonLockApplicationTests {
     public void contextLoads() {
     }
 
+    /**
+     * 通过api使用redisson
+     */
     @Test
     public void testRedissonLock() {
         Config config = new Config();
